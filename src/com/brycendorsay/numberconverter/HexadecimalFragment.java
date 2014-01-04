@@ -33,13 +33,24 @@ public class HexadecimalFragment extends Fragment {
 		convert.setOnClickListener(
 				new View.OnClickListener() {
 					public void onClick(View view) {
-						in = input.getText().toString();
-						output.setText("" + convertValue(in));
+						try {
+							in = input.getText().toString();
+							if(in.length() == 0)
+								throw new NullInputException("No Input");
+							for(int i = 0; i < in.length(); i++) {
+								char x = in.charAt(i);
+								if(!Character.isDigit(x)) {
+									throw new NullInputException("Invalid Input Characters");
+								}
+							}
+							output.setText("" + convertValue(in));
+						} catch(NullInputException e) {
+							in = "0";
+						} finally {
+							output.setText(convertValue(in));
+						}
 					}
 				});
-
-
-
 
 		return rootView;
 	}
@@ -77,7 +88,7 @@ public class HexadecimalFragment extends Fragment {
 				modded = "F";
 				break;
 			default:
-				modded = "Z";
+				modded = "ZONK";
 				break;
 			}
 			
